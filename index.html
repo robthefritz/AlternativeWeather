@@ -1,82 +1,26 @@
-<!DOCTYPE html>
-<html>
-<head>
-<link rel="stylesheet" type="text/css" href="./css/alternativeweather.css">
-<title>Weather App</title>
-</head>
-<body onload="loadIndex()">
-
-<script type="text/javascript" src="./config.js"></script>
-<script type="text/javascript" src="./js/index.js"></script>
-
-<div class="header">
-	<h1>Weather App</h1>
-	<h5 id="Time"></h5>
-</div>
-
-<div class="search-container">
-    <form id="locationForm" onsubmit="searchWeather(event)">
-        <input type="text" id="locationInput" placeholder="Enter ZIP code or city name..." required>
-        <button type="submit">Get Weather</button>
-    </form>
-    <div id="searchStatus"></div>
-</div>
-
-<div class="today" id="currentWeather" style="display: none;">
-	<h5 id="Description"></h5>
-    <table>
-        <tr>
-            <td><img id="Image" src="./img/sun-large.png" alt="weather"/></td>
-            <td>
-                <h1 id="Temperature"></h1>
-            </td>
-        <tr>
-    </table>
-</div>
-
-<h2>5-day forecast</h2>
-<div class="forecast-container">
-    <table style="width:100%">
-    	<tr>
-        	<th id="MonthDay1">Monday 1/1</th>
-        	<th id="MonthDay2">Tuesday 1/2</th> 
-        	<th id="MonthDay3">Wednesday 1/3</th>
-        	<th id="MonthDay4">Thursday 1/4</th>
-        	<th id="MonthDay5">Friday 1/5</th>
-        </tr>
-    	<tr>
-    		<td id="High1">High: --&deg</td>
-        	<td id="High2">High: --&deg</td> 
-        	<td id="High3">High: --&deg</td>
-        	<td id="High4">High: --&deg</td>
-        	<td id="High5">High: --&deg</td>
-        </tr>
-        <tr>
-            <td id="Low1">Low: --&deg</td>
-        	<td id="Low2">Low: --&deg</td> 
-        	<td id="Low3">Low: --&deg</td>
-        	<td id="Low4">Low: --&deg</td>
-        	<td id="Low5">Low: --&deg</td>
-        </tr>
-        <tr>
-        	<td>
-        		<img id="Image1" src="./img/sun-small.png" alt="weather"/>
-        	</td>
-        	<td>
-        		<img id="Image2" src="./img/sun-small.png" alt="weather"/>
-        	</td>
-        	<td>
-        		<img id="Image3" src="./img/sun-small.png" alt="weather"/>
-        	</td>
-        	<td>
-        		<img id="Image4" src="./img/sun-small.png" alt="weather"/>
-        	</td>
-        	<td>
-        		<img id="Image5" src="./img/sun-small.png" alt="weather"/>
-        	</td>
-    	</tr>
-     </table>
-</div>
-
-</body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Alternative Weather — Ministry of Weather</title>
+    <meta
+      name="description"
+      content="The official forecast is 75° and clear. Everywhere. Always. (Real data available on request.)"
+    />
+    <meta property="og:title" content="Alternative Weather" />
+    <meta property="og:description" content="The official forecast is 75° and clear. #notmyweather" />
+    <meta name="theme-color" content="#14213d" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body data-mode="official">
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
 </html>

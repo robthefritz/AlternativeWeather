@@ -1,0 +1,234 @@
+# Ministry of Weather: official spin library
+# Draft 1, November 2026. Edit freely: delete what isn't funny, rewrite what's close.
+#
+# Tokens the site fills in:
+#   {temp}      real current temperature, e.g. "19°"
+#   {official}  official temperature, always "75°"
+#   {high} {low} real high/low for the day
+#   {city}      place name, e.g. "Richmond"
+#   {wind}      real wind speed with units, e.g. "28 mph"
+#   {denial}    Denial Index 0-100
+#   {gap}       difference between {official} and real temp, e.g. "56°"
+#
+# How a line is picked: one headline (by Denial Index), then one condition line,
+# plus optionally a temperature or wind line. The pick is fixed per city per day,
+# so a shared link shows the same text.
+
+# ---------------------------------------------------------------------------
+# HEADLINES: the big line at the top, picked by Denial Index
+# ---------------------------------------------------------------------------
+headlines:
+  calm:        # 0-20: reality is close to official
+    - "Conditions in {city} are {official} and clear, as forecast by the Ministry."
+    - "Another flawless day in {city}. The Ministry accepts your thanks."
+    - "The Official Thermometer reads {official}. As always."
+    - "{city}: perfect. Next question."
+    - "Today's weather has been reviewed and approved."
+  firm:        # 21-50
+    - "Let me be clear: it is {official} in {city}."
+    - "The Ministry stands by today's forecast of {official} and clear."
+    - "Conditions in {city} remain within Ministry guidelines."
+    - "Reports of different weather in {city} are being looked into."
+    - "The weather today is exactly what it should be, which is {official}."
+  defensive:   # 51-80
+    - "I'm not going to dignify that thermometer with a response."
+    - "The Ministry is aware of the so-called weather in {city}. It changes nothing."
+    - "It is {official}. I've said it before. I'll say it again. It is {official}."
+    - "Whoever is reporting {temp} in {city} is not an accredited thermometer."
+    - "We are not taking questions about the sky at this time."
+  unraveling:  # 81-100
+    - "It. Is. {official}."
+    - "I'm going to ask everyone in {city} to stop looking out the window."
+    - "The Ministry's position has not changed, and neither will it, and please stop asking."
+    - "{official}. Clear skies. Please just go with it."
+    - "I have the Official Thermometer right here and it says {official}, so."
+
+# ---------------------------------------------------------------------------
+# CONDITIONS: picked from the real weather (mapped from Open-Meteo WMO codes)
+# ---------------------------------------------------------------------------
+conditions:
+  clear:
+    - "Clear skies, as the Ministry has always said."
+    - "The sky is doing exactly what it was told."
+    - "Not a cloud in sight, and frankly we'd like credit for that."
+    - "Sunshine, approved and delivered."
+
+  partly_cloudy:
+    - "A few decorative clouds have been added at no extra cost."
+    - "Those aren't clouds. That's sky texture."
+    - "Mostly sunny, which is the same as sunny, which is what we said."
+    - "Some shade has been provided for your comfort."
+
+  overcast:
+    - "The sun is working from home today. It's still fully engaged."
+    - "The sky is a premium matte finish today."
+    - "The sun is there. You just can't see it. Like a lot of good things."
+    - "Overcast is a strong word. We prefer 'cozy ceiling.'"
+
+  fog:
+    - "Visibility is low-resolution, by design."
+    - "That isn't fog. The air is just being modest."
+    - "We encourage everyone in {city} to visualize the sunshine."
+    - "You can't see the weather? Then how do you know it isn't {official}?"
+
+  drizzle:
+    - "Light misting provided as a complimentary skin treatment."
+    - "That's not drizzle. That's humidity with ambition."
+    - "Mild hydration services are active in {city}."
+    - "If you have to ask whether it's raining, it isn't."
+
+  rain:
+    - "Liquid sunshine is falling across {city}."
+    - "Moisture-forward conditions are within normal parameters."
+    - "The sky is giving back. We think that's beautiful."
+    - "Umbrellas are a personal choice, not an admission of anything."
+    - "What you're calling rain, we're calling a sky-based car wash."
+
+  heavy_rain:
+    - "Liquid sunshine is falling at an enthusiastic rate."
+    - "This is not flooding. This is the ground being very well hydrated."
+    - "We're aware of the water. The water is aware of us. We've agreed to disagree."
+    - "Anyone describing today as 'pouring' is spreading unaccredited weather."
+
+  thunderstorm:
+    - "That's atmospheric applause. The sky is very pleased with us."
+    - "The flashes you're seeing are the sky taking photos. It's a big day."
+    - "The rumbling is the sky clearing its throat before agreeing with us."
+    - "Indoor activities are recommended, for unrelated reasons."
+
+  snow:
+    - "Decorative precipitation is falling in {city}. Festive, isn't it?"
+    - "That's not snow. That's very cold sunshine."
+    - "Complimentary white ground covering has been applied."
+    - "Snow is just rain that's chosen to stay positive."
+
+  heavy_snow:
+    - "Decorative precipitation has been deployed in bulk."
+    - "Your car is not buried. It's being stored at no extra cost."
+    - "The Ministry has no record of a 'blizzard.' We do have a record of a very fun day."
+    - "If you can't open your front door, that's the weather saying stay and relax."
+
+  freezing:    # sleet, freezing rain, ice pellets
+    - "No comment."
+    - "The Ministry will not be discussing sleet."
+    - "We're aware of the ice. The ice is not a Ministry product."
+    - "Today's surfaces are extra smooth, as a courtesy."
+
+# ---------------------------------------------------------------------------
+# TEMPERATURE: optional extra line, by REAL temp band (site handles °F/°C)
+# ---------------------------------------------------------------------------
+temperature:
+  frigid:      # below 20°F / -7°C
+    - "It's {official}. It just feels like {temp} if you go outside, which nobody asked you to do."
+    - "The Official Thermometer is indoors, where it is {official}."
+    - "Today is very, very crisp. Historically crisp."
+    - "The gap between {official} and {temp} is {gap}, which is a rounding error."
+  cold:        # 20-45°F
+    - "Brisk. A brisk {official}."
+    - "Today's air is very fresh. Very fresh. Extremely fresh."
+    - "Jackets are optional and also strongly recommended, for fashion."
+  cool:        # 45-65°F
+    - "Basically {official}. Within the margin."
+    - "A sweater-weather {official}."
+    - "{temp} is just {official} with a cardigan on."
+  ideal:       # 65-82°F
+    - "See? We told you."
+    - "{temp}. Close enough. The Ministry rounds generously."
+    - "The Ministry would like to thank itself for this temperature."
+  hot:         # 82-95°F
+    - "It's {official}, plus some bonus {official}."
+    - "Extra-warm sunshine, at no extra cost."
+    - "It's not hot, it's enthusiastically {official}."
+  scorching:   # above 95°F
+    - "That's not heat. That's the sun showing you how much it cares."
+    - "It's {official} in the shade, if you can find any, which we're working on."
+    - "The Official Thermometer has been moved indoors for its own safety."
+
+# ---------------------------------------------------------------------------
+# WIND: optional extra line when wind is notable
+# ---------------------------------------------------------------------------
+wind:
+  breezy:      # ~15-30 mph sustained
+    - "Enthusiastic air is moving through {city} at {wind}."
+    - "That breeze is the sky waving hello."
+    - "The air is free to move about. We support that."
+  gale:        # 30+ mph sustained
+    - "That's not wind. That's {city} being hugged at {wind}."
+    - "Please hold on to your hats as an act of patriotism."
+    - "Trees are bending to show respect."
+
+# ---------------------------------------------------------------------------
+# 7-DAY FORECAST: short captions under each Official day (one or two words)
+# ---------------------------------------------------------------------------
+forecast_captions:
+  - "Perfect"
+  - "Flawless"
+  - "Ideal"
+  - "As planned"
+  - "Approved"
+  - "Very good"
+  - "Incredible"
+  - "No notes"
+  - "Pristine"
+  - "Ministry-grade"
+
+# For a day whose ACTUAL forecast is bad (Denial Index > 60 for that day)
+forecast_captions_strained:
+  - "Also perfect"
+  - "Still fine"
+  - "Under review"
+  - "We'll see"
+  - "Don't worry about it"
+  - "Probably fine"
+
+# ---------------------------------------------------------------------------
+# FACT-CHECK TOGGLE: text when the user switches to real data
+# ---------------------------------------------------------------------------
+factcheck:
+  toggle_on:
+    - "We noticed you clicked that."
+    - "Fine. Here's the so-called data."
+    - "The Ministry disavows the following numbers."
+    - "Showing unaccredited weather."
+  toggle_off:
+    - "Welcome back."
+    - "Thank you for your loyalty."
+    - "Good. Let's never speak of that again."
+  label_actual: "Unaccredited reading"
+  label_official: "Official reading"
+
+# ---------------------------------------------------------------------------
+# ALERTS: shown ABOVE a real NWS warning. Sincere, short, never spun.
+# The warning text itself is always shown exactly as issued.
+# ---------------------------------------------------------------------------
+alerts:
+  - "The Ministry has no comment. Please follow the official warning below."
+  - "Even we can't spin this one. Please take the warning below seriously."
+  - "Setting the podium aside. This one is real:"
+
+# ---------------------------------------------------------------------------
+# SIGN-OFFS: small footer line
+# ---------------------------------------------------------------------------
+signoffs:
+  - "Thank you. No further questions."
+  - "This briefing has been approved by the Ministry of Weather."
+  - "Remember: if you didn't hear it from us, it's not weather."
+  - "Stay {official}."
+  - "#notmyweather"
+
+# ---------------------------------------------------------------------------
+# SYSTEM STATES
+# ---------------------------------------------------------------------------
+states:
+  locating:
+    - "Locating you, for official purposes."
+    - "Consulting the Official Thermometer..."
+  location_denied:
+    - "You've declined to share your location. Very well. It's {official} wherever you are."
+  loading:
+    - "Preparing today's talking points..."
+    - "Reviewing the sky..."
+  data_error:
+    - "The weather data is unavailable. Which means it's {official}. Officially."
+  not_found:
+    - "The Ministry has no record of that place. It's probably lovely."
